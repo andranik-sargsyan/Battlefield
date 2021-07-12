@@ -35,15 +35,12 @@ namespace Battlefield.Models
                 if (Health <= 0)
                 {
                     IsDestroyed = true;
-                }
 
-                if (Health > 0)
-                {
-                    _soundPlayerHitWall.Play();
+                    _soundPlayerDestroyWall.Play();
                 }
                 else
                 {
-                    _soundPlayerDestroyWall.Play();
+                    _soundPlayerHitWall.Play();
                 }
             }
         }
