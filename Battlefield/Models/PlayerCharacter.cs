@@ -37,6 +37,11 @@ namespace Battlefield.Models
 
         public override void Move()
         {
+            if (!IsMoving)
+            {
+                return;
+            }
+
             var newPosition = Position;
 
             switch (Direction)

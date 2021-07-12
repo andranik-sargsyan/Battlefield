@@ -66,11 +66,11 @@ namespace Battlefield
 
             GameObjects.Add(_player);
 
-            GameObjects.Add(new Capybara(this, new Point(halfWidth - UnitSize.Width, ClientSize.Height - UnitSize.Height)));
-
             GameObjects.Add(new EnemyCharacter(this, _level, new Point(1, 1), (DirectionEnum)Random.Next(1, 5)));
             GameObjects.Add(new EnemyCharacter(this, _level, new Point(halfWidth - UnitSize.Width + 1, 1), (DirectionEnum)Random.Next(1, 5)));
             GameObjects.Add(new EnemyCharacter(this, _level, new Point(ClientSize.Width - UnitSize.Width + 1, 1), (DirectionEnum)Random.Next(1, 5)));
+
+            GameObjects.Add(new Capybara(this, new Point(halfWidth - UnitSize.Width, ClientSize.Height - UnitSize.Height)));
 
             GameObjects.Add(new Obstacle(this, new Point(halfWidth - 2 * UnitSize.Width, ClientSize.Height - 2 * UnitSize.Height)));
             GameObjects.Add(new Obstacle(this, new Point(halfWidth - UnitSize.Width, ClientSize.Height - 2 * UnitSize.Height)));
@@ -114,20 +114,17 @@ namespace Battlefield
                 return;
             }
 
-            if (_player.IsMoving)
-            {
-                _player.Move();
-            }
+            _player.Move();
 
             foreach (var gameObject in GameObjects.ToList())
             {
-                if (gameObject is Bullet)
+                if (gameObject is Bullet bullet)
                 {
-                    (gameObject as Bullet).Move();
+                    bullet.Move();
                 }
-                else if (gameObject is EnemyCharacter)
+                else if (gameObject is EnemyCharacter enemyCharacter)
                 {
-                    (gameObject as EnemyCharacter).Move();
+                    enemyCharacter.Move();
                 }
             }
 
@@ -197,7 +194,6 @@ namespace Battlefield
                 else
                 {
                     InitGameObjects();
-                    SetInfoText();
 
                     _gameIsRunning = true;
                 }
