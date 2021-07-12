@@ -251,16 +251,10 @@ namespace Battlefield
             switch (e.KeyCode)
             {
                 case Keys.Up:
-                    _player.HandleArrowKeyDown(DirectionEnum.Up);
-                    break;
                 case Keys.Right:
-                    _player.HandleArrowKeyDown(DirectionEnum.Right);
-                    break;
                 case Keys.Down:
-                    _player.HandleArrowKeyDown(DirectionEnum.Down);
-                    break;
                 case Keys.Left:
-                    _player.HandleArrowKeyDown(DirectionEnum.Left);
+                    _player.HandleArrowKeyDown((DirectionEnum)Enum.Parse(typeof(DirectionEnum), e.KeyCode.ToString()));
                     break;
                 case Keys.Space:
                     _player.Shoot();
@@ -287,16 +281,10 @@ namespace Battlefield
             switch (e.KeyCode)
             {
                 case Keys.Up:
-                    _player.HandleArrowKeyUp(DirectionEnum.Up);
-                    break;
                 case Keys.Right:
-                    _player.HandleArrowKeyUp(DirectionEnum.Right);
-                    break;
                 case Keys.Down:
-                    _player.HandleArrowKeyUp(DirectionEnum.Down);
-                    break;
                 case Keys.Left:
-                    _player.HandleArrowKeyUp(DirectionEnum.Left);
+                    _player.HandleArrowKeyUp((DirectionEnum)Enum.Parse(typeof(DirectionEnum), e.KeyCode.ToString()));
                     break;
                 default:
                     break;
