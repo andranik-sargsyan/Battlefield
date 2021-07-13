@@ -1,9 +1,7 @@
 ﻿using Battlefield.Enums;
 using System.Drawing;
 using System.Linq;
-using System.Media;
 using System.Windows.Forms;
-using WMPLib;
 
 namespace Battlefield.Models
 {
@@ -11,8 +9,6 @@ namespace Battlefield.Models
     {
         public bool IsStrong { get; set; }
 
-        private SoundPlayer _soundPlayerShooting2 = new SoundPlayer(@"Sounds\shooting2.wav");
-        private SoundPlayer _soundPlayerShooting3 = new SoundPlayer(@"Sounds\shooting3.wav");
         private int _shootProbability = 200;
         private int _level;
 
@@ -62,7 +58,7 @@ namespace Battlefield.Models
             if (isInBounds && collidedObject == null)
             {
                 Position = newPosition;
-
+                
                 if (GameForm.Random.Next(_shootProbability - _level * 15) == 0)
                 {
                     Shoot();
@@ -77,18 +73,6 @@ namespace Battlefield.Models
             if (bonus != null && HasCollision(bonus))
             {
                 bonus.Collide(this);
-            }
-        }
-
-        public override void PlayShootingSound()
-        {
-            if (IsStrong)
-            {
-                _soundPlayerShooting3.Play();
-            }
-            else
-            {
-                _soundPlayerShooting2.Play();
             }
         }
     }

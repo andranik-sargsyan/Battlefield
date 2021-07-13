@@ -47,6 +47,10 @@ namespace Battlefield.Models
 
         public override void Draw(Graphics g)
         {
+            if (Health == 3 && Picture.ImageLocation != @"Images\wall.jpg")
+            {
+                Picture.ImageLocation = @"Images\wall.jpg";
+            }
             if (Health == 2 && Picture.ImageLocation != @"Images\wall-broken-1.jpg")
             {
                 Picture.ImageLocation = @"Images\wall-broken-1.jpg";

@@ -117,7 +117,7 @@
     <Content Include="Images\bonus-damage.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\bonus-speed.gif">
+    <Content Include="Images\bonus-wall.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\bullet-r.png">
@@ -240,13 +240,13 @@
     <Content Include="Sounds\moving.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Sounds\shooting1.wav">
+    <Content Include="Sounds\shooting-player.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Sounds\shooting2.wav">
+    <Content Include="Sounds\shooting-enemy.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Sounds\shooting3.wav">
+    <Content Include="Sounds\shooting-strong.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Sounds\win.wav">

@@ -25,7 +25,7 @@ namespace Battlefield.Models
 
             Size = new Size(GameForm.UnitSize.Width / 3, GameForm.UnitSize.Height / 3);
 
-            var damageSuffix = damage == 2 ? "-r" : string.Empty;
+            var damageSuffix = damage > 1 ? "-r" : string.Empty;
             Picture.Image = Image.FromFile($@"Images\bullet{damageSuffix}.png");
 
             control.Controls.Add(Picture);

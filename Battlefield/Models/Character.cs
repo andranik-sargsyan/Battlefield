@@ -7,6 +7,9 @@ namespace Battlefield.Models
 {
     abstract class Character : Unit
     {
+        private SoundPlayer _soundPlayerShootingPlayer = new SoundPlayer(@"Sounds\shooting-player.wav");
+        private SoundPlayer _soundPlayerShootingEnemy = new SoundPlayer(@"Sounds\shooting-enemy.wav");
+        private SoundPlayer _soundPlayerShootingStrong = new SoundPlayer(@"Sounds\shooting-strong.wav");
         private SoundPlayer _soundPlayerHitVehicle = new SoundPlayer(@"Sounds\hit-vehicle.wav");
         private SoundPlayer _soundPlayerDestroyVehicle = new SoundPlayer(@"Sounds\destroy-vehicle.wav");
         private string _color;
@@ -59,7 +62,7 @@ namespace Battlefield.Models
 
         public override void Draw(Graphics g)
         {
-            string strongSuffix = this is EnemyCharacter enemy && enemy.Health > 5 ? "-w" : string.Empty;
+            string strongSuffix = this is EnemyCharacter enemy && enemy.IsStrong ? "-w" : string.Empty;
             string suffix = Health > 1 ? string.Empty : "-damaged";
 
             switch (Direction)
@@ -128,6 +131,23 @@ namespace Battlefield.Models
             }
         }
 
-        public abstract void PlayShootingSound();
+        public void PlayShootingSound()
+        {
+            if (Damage > 1)
+            {
+                _soundPlayerShootingStrong.Play();
+            }
+            else
+            {
+                if (this is PlayerCharacter)
+                {
+                    _soundPlayerShootingPlayer.Play();
+                }
+                else
+                {
+                    _soundPlayerShootingEnemy.Play();
+                }
+            }
+        }
     }
 }

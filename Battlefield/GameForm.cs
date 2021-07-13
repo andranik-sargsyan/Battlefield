@@ -114,9 +114,7 @@ namespace Battlefield
                 return;
             }
 
-            _player.Move();
-
-            foreach (Unit gameObject in GameObjects.Where(ob => ob is Bullet || ob is EnemyCharacter).ToList())
+            foreach (Unit gameObject in GameObjects.Where(ob => ob is Unit).ToList())
             {
                 gameObject.Move();
             }
@@ -131,8 +129,21 @@ namespace Battlefield
 
                     if (enemyCharacter.IsStrong && _currentEnemyCount > 0)
                     {
-                        //TODO: temporary
-                        GameObjects.Add(new Bonus(this, new Point(ClientSize.Width / 2 - 4 * UnitSize.Width, ClientSize.Height - 2 * UnitSize.Height), BonusTypeEnum.Health));
+                        Point bonusPoint = default;
+
+                        do
+                        {
+                            bonusPoint.X = Random.Next(ClientSize.Width / UnitSize.Width) * UnitSize.Width;
+                            bonusPoint.Y = Random.Next(ClientSize.Height / UnitSize.Height) * UnitSize.Height;
+                        } while (GameObjects.Any(ob => ob.HasCollision(bonusPoint, UnitSize)));
+
+                        var existingBonus = GameObjects.FirstOrDefault(ob => ob is Bonus);
+                        if (existingBonus != null)
+                        {
+                            existingBonus.IsDestroyed = true;
+                        }
+
+                        GameObjects.Add(new Bonus(this, bonusPoint, (BonusTypeEnum)Random.Next(3)));
                     }
                 }
 
@@ -197,11 +208,11 @@ namespace Battlefield
                     _gameIsRunning = true;
                 }
 
-                //TODO: add HP bonus
-                //TODO: add Damage bonus
-                //TODO: add Speed bonus
-
                 //TODO: prefer using soundsnap.com 8-bit sounds (from "Game" category)
+
+                //TODO: show PAUSED when paused :)
+
+                //TODO: add more bonuses (speed? / blow all - with sound / etc.)
             }
             else if (_currentEnemyCount >= 3 && GameObjects.Count(ob => ob is EnemyCharacter) < 3)
             {
@@ -212,15 +223,22 @@ namespace Battlefield
                     new Point(ClientSize.Width - UnitSize.Width + 1, 1)
                 };
 
+                var characterSize = new Size(UnitSize.Width - 2, UnitSize.Height - 2);
+
+                int tries = 0;
+                int maxTries = 30;
                 int spawnIndex;
                 do
                 {
                     spawnIndex = Random.Next(3);
-                } while (GameObjects.Any(ob => GameObject.HasCollision(ob.Position, UnitSize, spawnPoints[spawnIndex], UnitSize)));
+                    tries++;
+                } while (GameObjects.Any(ob => ob.HasCollision(spawnPoints[spawnIndex], characterSize)) && tries < maxTries);
 
-                bool isStrong = Random.Next(5) < 2;
-
-                GameObjects.Add(new EnemyCharacter(this, _level, spawnPoints[spawnIndex], (DirectionEnum)Random.Next(1, 5), isStrong));
+                if (tries < maxTries)
+                {
+                    bool isStrong = Random.Next(5) < 2;
+                    GameObjects.Add(new EnemyCharacter(this, _level, spawnPoints[spawnIndex], (DirectionEnum)Random.Next(1, 5), isStrong));
+                }
             }
 
             SetInfoText();
@@ -297,7 +315,7 @@ namespace Battlefield
 
         private void SetInfoText()
         {
-            Text = $"Battlefield | Level - {_level} | Enemies - {_currentEnemyCount} | Speed - {_player.Speed} | Helath - {_player.Health} | Score - {_score}";
+            Text = $"Battlefield | Level - {_level} | Enemies - {_currentEnemyCount} | Speed - {_player.Speed} | Damage - {_player.Damage} | Helath - {_player.Health} | Score - {_score}";
         }
 
         private void PrepareNewGame()

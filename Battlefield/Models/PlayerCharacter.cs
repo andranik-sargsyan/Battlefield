@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Media;
 using System.Windows.Forms;
 using WMPLib;
 
@@ -11,7 +10,6 @@ namespace Battlefield.Models
 {
     class PlayerCharacter : Character
     {
-        private SoundPlayer _soundPlayerShooting1 = new SoundPlayer(@"Sounds\shooting1.wav");
         private WindowsMediaPlayer _windowsMediaPlayerMoving = new WindowsMediaPlayer();
         private Stopwatch _stopwatch = new Stopwatch();
         private List<DirectionEnum> _downKeys = new List<DirectionEnum>();
@@ -126,11 +124,6 @@ namespace Battlefield.Models
             {
                 Direction = _downKeys[_downKeys.Count - 1];
             }
-        }
-
-        public override void PlayShootingSound()
-        {
-            _soundPlayerShooting1.Play();
         }
     }
 }
