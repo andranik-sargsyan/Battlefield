@@ -72,13 +72,19 @@ namespace Battlefield.Models
             }
 
             if (IsInBounds(newPosition, _control) &&
-                !GameForm.GameObjects.Any(ob => !(ob is PlayerCharacter) && ob.HasCollision(newPosition, Size)))
+                !GameForm.GameObjects.Any(ob => !(ob is PlayerCharacter) && !(ob is Bonus) && ob.HasCollision(newPosition, Size)))
             {
                 Position = newPosition;
             }
             else
             {
                 Speed = 1;
+            }
+
+            var bonus = GameForm.GameObjects.FirstOrDefault(ob => ob is Bonus);
+            if (bonus != null && HasCollision(bonus))
+            {
+                bonus.Collide(this);
             }
         }
 

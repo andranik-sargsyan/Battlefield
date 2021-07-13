@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\BonusTypeEnum.cs" />
     <Compile Include="Enums\DirectionEnum.cs" />
     <Compile Include="GameForm.cs">
       <SubType>Form</SubType>
@@ -64,6 +65,7 @@
     <Compile Include="Models\Character.cs" />
     <Compile Include="Models\EnemyCharacter.cs" />
     <Compile Include="Models\GameObject.cs" />
+    <Compile Include="Models\Bonus.cs" />
     <Compile Include="Models\Obstacle.cs" />
     <Compile Include="Models\PlayerCharacter.cs" />
     <Compile Include="Models\Unit.cs" />
@@ -112,6 +114,12 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\bonus-damage.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\bonus-speed.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\bullet-r.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -119,6 +127,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\capybara.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\bonus-health.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\tank-blue-down-damaged.png">
@@ -200,6 +211,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\wall.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sounds\bonus.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Sounds\destroy-vehicle.wav">

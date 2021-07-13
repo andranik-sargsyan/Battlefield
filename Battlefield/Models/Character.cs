@@ -81,8 +81,6 @@ namespace Battlefield.Models
             }
         }
 
-        public abstract void Move();
-
         public virtual void Shoot()
         {
             var doShoot = false;

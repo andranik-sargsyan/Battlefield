@@ -57,7 +57,7 @@ namespace Battlefield.Models
             }
 
             var isInBounds = IsInBounds(newPosition, _control);
-            var collidedObject = GameForm.GameObjects.FirstOrDefault(ob => ob != this && ob.HasCollision(newPosition, Size));
+            var collidedObject = GameForm.GameObjects.FirstOrDefault(ob => ob != this && !(ob is Bonus) && ob.HasCollision(newPosition, Size));
 
             if (isInBounds && collidedObject == null)
             {
@@ -71,6 +71,12 @@ namespace Battlefield.Models
             else
             {
                 Direction = (DirectionEnum)GameForm.Random.Next(1, 5);
+            }
+
+            var bonus = GameForm.GameObjects.FirstOrDefault(ob => ob is Bonus);
+            if (bonus != null && HasCollision(bonus))
+            {
+                bonus.Collide(this);
             }
         }
 

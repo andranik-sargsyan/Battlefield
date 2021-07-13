@@ -4,13 +4,10 @@ using System.Windows.Forms;
 
 namespace Battlefield.Models
 {
-    class Capybara : Unit
+    class Capybara : GameObject
     {
-        private Control _control;
-
         public Capybara(Control control, Point position)
         {
-            _control = control;
             Position = position;
 
             Picture.Image = Image.FromFile(@"Images\capybara.png");

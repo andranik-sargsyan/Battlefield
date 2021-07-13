@@ -116,16 +116,9 @@ namespace Battlefield
 
             _player.Move();
 
-            foreach (var gameObject in GameObjects.ToList())
+            foreach (Unit gameObject in GameObjects.Where(ob => ob is Bullet || ob is EnemyCharacter).ToList())
             {
-                if (gameObject is Bullet bullet)
-                {
-                    bullet.Move();
-                }
-                else if (gameObject is EnemyCharacter enemyCharacter)
-                {
-                    enemyCharacter.Move();
-                }
+                gameObject.Move();
             }
 
             var removedObjects = GameObjects.Where(ob => ob.IsDestroyed).ToList();
@@ -135,6 +128,12 @@ namespace Battlefield
                 {
                     _score += enemyCharacter.IsStrong ? 2 : 1;
                     _currentEnemyCount--;
+
+                    if (enemyCharacter.IsStrong && _currentEnemyCount > 0)
+                    {
+                        //TODO: temporary
+                        GameObjects.Add(new Bonus(this, new Point(ClientSize.Width / 2 - 4 * UnitSize.Width, ClientSize.Height - 2 * UnitSize.Height), BonusTypeEnum.Health));
+                    }
                 }
 
                 Controls.Remove(gameObject.Picture);
@@ -201,6 +200,8 @@ namespace Battlefield
                 //TODO: add HP bonus
                 //TODO: add Damage bonus
                 //TODO: add Speed bonus
+
+                //TODO: prefer using soundsnap.com 8-bit sounds (from "Game" category)
             }
             else if (_currentEnemyCount >= 3 && GameObjects.Count(ob => ob is EnemyCharacter) < 3)
             {

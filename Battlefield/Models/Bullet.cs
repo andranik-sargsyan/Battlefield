@@ -44,7 +44,7 @@ namespace Battlefield.Models
             //nothing to do for now
         }
 
-        public void Move()
+        public override void Move()
         {
             var newPosition = Position;
 
@@ -67,7 +67,7 @@ namespace Battlefield.Models
             }
 
             var isInBounds = IsInBounds(newPosition, _control);
-            var collidedObject = GameForm.GameObjects.FirstOrDefault(ob => ob != this && ob.HasCollision(newPosition, Size));
+            var collidedObject = GameForm.GameObjects.FirstOrDefault(ob => ob != this && !(ob is Bonus) && ob.HasCollision(newPosition, Size));
 
             if (isInBounds && collidedObject == null)
             {
