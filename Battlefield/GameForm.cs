@@ -212,7 +212,7 @@ namespace Battlefield
 
                 //TODO: show PAUSED when paused :)
 
-                //TODO: add more bonuses (speed? / blow all - with sound / etc.)
+                //TODO: add more bonuses (speed? / blow all - with sound / fast bullet / +restore the capybara wall etc.)
             }
             else if (_currentEnemyCount >= 3 && GameObjects.Count(ob => ob is EnemyCharacter) < 3)
             {
@@ -315,7 +315,7 @@ namespace Battlefield
 
         private void SetInfoText()
         {
-            Text = $"Battlefield | Level - {_level} | Enemies - {_currentEnemyCount} | Speed - {_player.Speed} | Damage - {_player.Damage} | Helath - {_player.Health} | Score - {_score}";
+            Text = $"Battlefield | # - {_level} | 🚚 - {_currentEnemyCount} | 🗲 - {_player.Speed} | ★ - {_player.Damage} | ♥ - {_player.Health} | $ - {_score}";
         }
 
         private void PrepareNewGame()
