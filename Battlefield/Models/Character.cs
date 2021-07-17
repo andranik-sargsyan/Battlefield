@@ -57,7 +57,11 @@ namespace Battlefield.Models
                     }
                     else if (this is PlayerCharacter playerCharacter)
                     {
-                        playerCharacter.Speed = Health;
+                        if (playerCharacter.Speed > 1)
+                        {
+                            playerCharacter.Speed--;
+                        }
+                        playerCharacter.MaxSpeed = 3;
                     }
                 }
 

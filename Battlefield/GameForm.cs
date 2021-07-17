@@ -209,8 +209,6 @@ namespace Battlefield
 
                     _gameIsRunning = true;
                 }
-
-                //TODO: do not collide enemy bullets
             }
             else if (_currentEnemyCount >= 3 && enemiesVisible < 3 || _currentEnemyCount > 0 && _currentEnemyCount < 3 && enemiesVisible < _currentEnemyCount)
             {
