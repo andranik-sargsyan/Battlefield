@@ -9,14 +9,31 @@ namespace Battlefield.Models
         private Control _control;
         private SoundPlayer _soundPlayerHitWall = new SoundPlayer(@"Sounds\hit-wall.wav");
         private SoundPlayer _soundPlayerDestroyWall = new SoundPlayer(@"Sounds\destroy-wall.wav");
+        private int _health;
 
-        public int Health { get; set; }
+        public int Health
+        {
+            get
+            {
+                return _health;
+            }
+            set
+            {
+                _health = value;
+                if (_health <= 0)
+                {
+                    IsDestroyed = true;
+                }
+            }
+        }
+        public bool IsShield { get; set; }
 
-        public Obstacle(Control control, Point position)
+        public Obstacle(Control control, Point position, bool isShield = false)
         {
             _control = control;
             Position = position;
 
+            IsShield = isShield;
             Picture.Image = Image.FromFile(@"Images\wall.jpg");
             Health = 3;
 
@@ -34,8 +51,6 @@ namespace Battlefield.Models
 
                 if (Health <= 0)
                 {
-                    IsDestroyed = true;
-
                     _soundPlayerDestroyWall.Play();
                 }
                 else

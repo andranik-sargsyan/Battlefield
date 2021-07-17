@@ -9,18 +9,20 @@ namespace Battlefield.Models
     class Bullet : Unit
     {
         public int Damage { get; set; }
+        public Character Character { get; set; }
 
         private Control _control;
         private SoundPlayer _soundPlayerHitBound = new SoundPlayer(@"Sounds\hit-bound.wav");
         private SoundPlayer _soundPlayerHitBullet = new SoundPlayer(@"Sounds\hit-bullet.wav");
 
-        public Bullet(Control control, Point position, DirectionEnum direction, int damage = 1)
+        public Bullet(Control control, Character character, Point position, DirectionEnum direction, int damage = 1, int bonusSpeed = 0)
         {
             _control = control;
 
+            Character = character;
             Position = position;
             Direction = direction;
-            Speed = 5;
+            Speed = 5 + bonusSpeed;
             Damage = damage;
 
             Size = new Size(GameForm.UnitSize.Width / 3, GameForm.UnitSize.Height / 3);
@@ -33,10 +35,13 @@ namespace Battlefield.Models
 
         public override void Collide(GameObject ob)
         {
-            IsDestroyed = true;
-            ob.IsDestroyed = true;
+            if (ob is Bullet bullet)
+            {
+                IsDestroyed = true;
+                ob.IsDestroyed = true;
 
-            _soundPlayerHitBullet.Play();
+                _soundPlayerHitBullet.Play();
+            }
         }
 
         public override void Draw(Graphics g)
@@ -69,7 +74,7 @@ namespace Battlefield.Models
             var isInBounds = IsInBounds(newPosition, _control);
             var collidedObject = GameForm.GameObjects.FirstOrDefault(ob => ob != this && !(ob is Bonus) && ob.HasCollision(newPosition, Size));
 
-            if (isInBounds && collidedObject == null)
+            if (isInBounds && (collidedObject == null || collidedObject.GetType() == Character.GetType()))
             {
                 Position = newPosition;
             }

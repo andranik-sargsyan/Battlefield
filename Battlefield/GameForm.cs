@@ -23,7 +23,8 @@ namespace Battlefield
         private SoundPlayer _soundPlayerWin = new SoundPlayer(@"Sounds\win.wav");
         private SoundPlayer _soundPlayerGameOver = new SoundPlayer(@"Sounds\game-over.wav");
         private LevelReaderService _levelReaderService = new LevelReaderService();
-        private int _defaultEnemyCount = 5;
+        private int _defaultEnemyCount = 10;
+        private int _enemyCountMultiplier = 5;
         private int _startLevel = 1;
         private int _lastLevel = 5;
         private int _level;
@@ -72,11 +73,11 @@ namespace Battlefield
 
             GameObjects.Add(new Capybara(this, new Point(halfWidth - UnitSize.Width, ClientSize.Height - UnitSize.Height)));
 
-            GameObjects.Add(new Obstacle(this, new Point(halfWidth - 2 * UnitSize.Width, ClientSize.Height - 2 * UnitSize.Height)));
-            GameObjects.Add(new Obstacle(this, new Point(halfWidth - UnitSize.Width, ClientSize.Height - 2 * UnitSize.Height)));
-            GameObjects.Add(new Obstacle(this, new Point(halfWidth, ClientSize.Height - 2 * UnitSize.Height)));
-            GameObjects.Add(new Obstacle(this, new Point(halfWidth - 2 * UnitSize.Width, ClientSize.Height - UnitSize.Height)));
-            GameObjects.Add(new Obstacle(this, new Point(halfWidth, ClientSize.Height - UnitSize.Height)));
+            GameObjects.Add(new Obstacle(this, new Point(halfWidth - 2 * UnitSize.Width, ClientSize.Height - 2 * UnitSize.Height), true));
+            GameObjects.Add(new Obstacle(this, new Point(halfWidth - UnitSize.Width, ClientSize.Height - 2 * UnitSize.Height), true));
+            GameObjects.Add(new Obstacle(this, new Point(halfWidth, ClientSize.Height - 2 * UnitSize.Height), true));
+            GameObjects.Add(new Obstacle(this, new Point(halfWidth - 2 * UnitSize.Width, ClientSize.Height - UnitSize.Height), true));
+            GameObjects.Add(new Obstacle(this, new Point(halfWidth, ClientSize.Height - UnitSize.Height), true));
 
             InitObstacles(halfWidth, halfHeight);
         }
@@ -127,7 +128,7 @@ namespace Battlefield
                     _score += enemyCharacter.IsStrong ? 2 : 1;
                     _currentEnemyCount--;
 
-                    if (enemyCharacter.IsStrong && _currentEnemyCount > 0)
+                    if (enemyCharacter.IsStrong && !enemyCharacter.IsExploded && _currentEnemyCount > 0)
                     {
                         Point bonusPoint = default;
 
@@ -143,7 +144,7 @@ namespace Battlefield
                             existingBonus.IsDestroyed = true;
                         }
 
-                        GameObjects.Add(new Bonus(this, bonusPoint, (BonusTypeEnum)Random.Next(3)));
+                        GameObjects.Add(new Bonus(this, bonusPoint, (BonusTypeEnum)Random.Next(6)));
                     }
                 }
 
@@ -174,6 +175,7 @@ namespace Battlefield
                 }
             }
 
+            var enemiesVisible = GameObjects.Count(ob => ob is EnemyCharacter);
             if (_currentEnemyCount == 0)
             {
                 _player.Stop();
@@ -181,7 +183,7 @@ namespace Battlefield
                 _gameIsRunning = false;
 
                 _level++;
-                _currentEnemyCount = _defaultEnemyCount * _level;
+                _currentEnemyCount = _defaultEnemyCount + _enemyCountMultiplier * _level;
 
                 _soundPlayerWin.PlaySync();
 
@@ -208,13 +210,9 @@ namespace Battlefield
                     _gameIsRunning = true;
                 }
 
-                //TODO: prefer using soundsnap.com 8-bit sounds (from "Game" category)
-
-                //TODO: show PAUSED when paused :)
-
-                //TODO: add more bonuses (speed? / blow all - with sound / fast bullet / +restore the capybara wall etc.)
+                //TODO: do not collide enemy bullets
             }
-            else if (_currentEnemyCount >= 3 && GameObjects.Count(ob => ob is EnemyCharacter) < 3)
+            else if (_currentEnemyCount >= 3 && enemiesVisible < 3 || _currentEnemyCount > 0 && _currentEnemyCount < 3 && enemiesVisible < _currentEnemyCount)
             {
                 var spawnPoints = new List<Point>
                 {
@@ -276,6 +274,7 @@ namespace Battlefield
                     break;
                 case Keys.Escape:
                     _gameIsRunning = !_gameIsRunning;
+                    SetInfoText();
                     break;
                 default:
                     break;
@@ -315,7 +314,9 @@ namespace Battlefield
 
         private void SetInfoText()
         {
-            Text = $"Battlefield | # - {_level} | 🚚 - {_currentEnemyCount} | 🗲 - {_player.Speed} | ★ - {_player.Damage} | ♥ - {_player.Health} | $ - {_score}";
+            string pausedText = _gameIsRunning ? string.Empty : " - Paused";
+
+            Text = $"Battlefield{pausedText} | LVL - {_level} | 🚚 - {_currentEnemyCount} | 🗲 - {_player.Speed}/{_player.MaxSpeed} | ⁍⁍ - {_player.BonusBulletSpeed} | ★ - {_player.Damage} | ♥ - {_player.Health} | $ - {_score}";
         }
 
         private void PrepareNewGame()

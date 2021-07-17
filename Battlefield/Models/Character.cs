@@ -13,11 +13,28 @@ namespace Battlefield.Models
         private SoundPlayer _soundPlayerHitVehicle = new SoundPlayer(@"Sounds\hit-vehicle.wav");
         private SoundPlayer _soundPlayerDestroyVehicle = new SoundPlayer(@"Sounds\destroy-vehicle.wav");
         private string _color;
+        private int _health;
 
         protected Control _control;
 
-        public int Health { get; set; }
+        public int Health
+        {
+            get
+            {
+                return _health;
+            }
+            set
+            {
+                _health = value;
+                if (_health <= 0)
+                {
+                    IsDestroyed = true;
+                }
+            }
+        }
         public int Damage { get; set; }
+        public int MaxSpeed { get; set; } = 3;
+        public int BonusBulletSpeed { get; set; } = 0;
 
         public Character()
         {
@@ -42,11 +59,6 @@ namespace Battlefield.Models
                     {
                         playerCharacter.Speed = Health;
                     }
-                }
-
-                if (Health <= 0)
-                {
-                    IsDestroyed = true;
                 }
 
                 if (Health > 0)
@@ -127,7 +139,7 @@ namespace Battlefield.Models
             {
                 PlayShootingSound();
 
-                GameForm.GameObjects.Add(new Bullet(_control, bulletPosition, Direction, Damage));
+                GameForm.GameObjects.Add(new Bullet(_control, this, bulletPosition, Direction, Damage, BonusBulletSpeed));
             }
         }
 

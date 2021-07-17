@@ -8,6 +8,7 @@ namespace Battlefield.Models
     class EnemyCharacter : Character
     {
         public bool IsStrong { get; set; }
+        public bool IsExploded { get; set; }
 
         private int _shootProbability = 200;
         private int _level;

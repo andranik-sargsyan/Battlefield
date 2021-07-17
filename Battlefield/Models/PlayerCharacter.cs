@@ -21,7 +21,7 @@ namespace Battlefield.Models
             _control = control;
 
             Position = position;
-            Health = 3;
+            Health = 4;
             Damage = 1;
             Direction = direction;
             Speed = 1;
@@ -67,6 +67,10 @@ namespace Battlefield.Models
             if (_stopwatch.Elapsed.Seconds > 4 && Health > 2)
             {
                 Speed = 3;
+            }
+            if (_stopwatch.Elapsed.Seconds > 6 && Health > 3 && MaxSpeed == 4)
+            {
+                Speed = 4;
             }
 
             if (IsInBounds(newPosition, _control) &&
