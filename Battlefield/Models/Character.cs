@@ -1,17 +1,12 @@
 ﻿using Battlefield.Enums;
 using System.Drawing;
-using System.Media;
 using System.Windows.Forms;
+using WMPLib;
 
 namespace Battlefield.Models
 {
     abstract class Character : Unit
     {
-        private SoundPlayer _soundPlayerShootingPlayer = new SoundPlayer(@"Sounds\shooting-player.wav");
-        private SoundPlayer _soundPlayerShootingEnemy = new SoundPlayer(@"Sounds\shooting-enemy.wav");
-        private SoundPlayer _soundPlayerShootingStrong = new SoundPlayer(@"Sounds\shooting-strong.wav");
-        private SoundPlayer _soundPlayerHitVehicle = new SoundPlayer(@"Sounds\hit-vehicle.wav");
-        private SoundPlayer _soundPlayerDestroyVehicle = new SoundPlayer(@"Sounds\destroy-vehicle.wav");
         private string _color;
         private int _health;
 
@@ -41,6 +36,8 @@ namespace Battlefield.Models
             _color = this is PlayerCharacter ? "blue" : "red";
 
             Size = new Size(GameForm.UnitSize.Width - 2, GameForm.UnitSize.Height - 2);
+
+            _windowsMediaPlayer = new WindowsMediaPlayer();
         }
 
         public override void Collide(GameObject ob)
@@ -67,11 +64,11 @@ namespace Battlefield.Models
 
                 if (Health > 0)
                 {
-                    _soundPlayerHitVehicle.Play();
+                    _windowsMediaPlayer.URL = @"Sounds\hit-vehicle.wav";
                 }
                 else
                 {
-                    _soundPlayerDestroyVehicle.Play();
+                    _windowsMediaPlayer.URL = @"Sounds\destroy-vehicle.wav";
                 }
             }
         }
@@ -151,17 +148,17 @@ namespace Battlefield.Models
         {
             if (Damage > 1)
             {
-                _soundPlayerShootingStrong.Play();
+                _windowsMediaPlayer.URL = @"Sounds\shooting-strong.wav";
             }
             else
             {
                 if (this is PlayerCharacter)
                 {
-                    _soundPlayerShootingPlayer.Play();
+                    _windowsMediaPlayer.URL = @"Sounds\shooting-player.wav";
                 }
                 else
                 {
-                    _soundPlayerShootingEnemy.Play();
+                    _windowsMediaPlayer.URL = @"Sounds\shooting-enemy.wav";
                 }
             }
         }

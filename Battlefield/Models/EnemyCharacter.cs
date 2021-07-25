@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using WMPLib;
 
 namespace Battlefield.Models
 {
@@ -29,6 +30,8 @@ namespace Battlefield.Models
             Picture.Image = Image.FromFile($@"Images\tank-red{strongSuffix}-down.png");
 
             control.Controls.Add(Picture);
+
+            _windowsMediaPlayer = new WindowsMediaPlayer();
         }
 
         public override void Move()
@@ -54,7 +57,8 @@ namespace Battlefield.Models
             }
 
             var isInBounds = IsInBounds(newPosition, _control);
-            var collidedObject = GameForm.GameObjects.FirstOrDefault(ob => ob != this && !(ob is Bonus) && ob.HasCollision(newPosition, Size));
+            var collidedObject = GameForm.GameObjects.FirstOrDefault(ob => ob != this && !(ob is Bonus) &&
+                !(ob is Bullet bullet && bullet.Character is EnemyCharacter) && ob.HasCollision(newPosition, Size));
 
             if (isInBounds && collidedObject == null)
             {

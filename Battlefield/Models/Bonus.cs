@@ -1,15 +1,14 @@
 ﻿using Battlefield.Enums;
 using System.Drawing;
 using System.Linq;
-using System.Media;
 using System.Windows.Forms;
+using WMPLib;
 
 namespace Battlefield.Models
 {
     class Bonus : GameObject
     {
         private Control _control;
-        private SoundPlayer _soundPlayerBonus = new SoundPlayer(@"Sounds\bonus.wav");
         private BonusTypeEnum _type;
 
         public Bonus(Control control, Point position, BonusTypeEnum type)
@@ -22,6 +21,8 @@ namespace Battlefield.Models
             Picture.Image = Image.FromFile($@"Images\bonus-{type.ToString().ToLower()}.gif");
 
             control.Controls.Add(Picture);
+
+            _windowsMediaPlayer = new WindowsMediaPlayer();
         }
 
         public override void Collide(GameObject ob)
@@ -106,7 +107,7 @@ namespace Battlefield.Models
                     break;
             }
 
-            _soundPlayerBonus.Play();
+            _windowsMediaPlayer.URL = @"Sounds\bonus.wav";
 
             IsDestroyed = true;
         }

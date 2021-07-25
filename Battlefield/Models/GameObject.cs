@@ -1,10 +1,13 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
+using WMPLib;
 
 namespace Battlefield.Models
 {
     public abstract class GameObject
     {
+        protected WindowsMediaPlayer _windowsMediaPlayer;
+
         public bool IsDestroyed { get; set; }
 
         public PictureBox Picture { get; set; } = new PictureBox();
